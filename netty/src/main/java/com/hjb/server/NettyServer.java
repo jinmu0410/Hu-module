@@ -1,5 +1,7 @@
 package com.hjb.server;
 
+import com.hjb.coder.MessageDecode;
+import com.hjb.coder.MessageEncode;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -8,9 +10,6 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
-import io.netty.util.concurrent.Future;
 
 public class NettyServer {
 
@@ -25,10 +24,14 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast(new StringDecoder());
-                        pipeline.addLast(new StringEncoder());
-                        pipeline.addLast(new ServerHandler());
+                        ChannelPipeline cp = ch.pipeline();
+                       /* cp.addLast(new StringDecoder());
+                        cp.addLast(new StringEncoder());*/
+
+                        cp.addLast(new MessageEncode());
+                        cp.addLast(new MessageDecode());
+                        //cp.addLast(new ServerHandler());
+                        cp.addLast(new MessageHandler());
                     }
                 });
         try {

@@ -7,7 +7,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-public class MeeageDecode extends ByteToMessageDecoder {
+public class MessageDecode extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 
@@ -20,7 +20,8 @@ public class MeeageDecode extends ByteToMessageDecoder {
         String sessionId = new String(sessionByte);
 
         // 读取消息内容
-        byte[] content = in.readBytes(in.readableBytes()).array();
+        //byte[] content = in.readBytes(in.readableBytes()).array();
+        byte[] content = new byte[in.readableBytes()];
         String data = new String(content);
 
         Message message = new Message();

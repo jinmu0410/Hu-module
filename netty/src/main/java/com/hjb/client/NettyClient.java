@@ -1,5 +1,10 @@
 package com.hjb.client;
 
+import com.alibaba.fastjson.JSON;
+import com.hjb.coder.MessageDecode;
+import com.hjb.coder.MessageEncode;
+import com.hjb.model.Message;
+import com.hjb.model.User;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -8,12 +13,8 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.UUID;
 
 public class NettyClient {
 
@@ -26,23 +27,37 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline cp = ch.pipeline();
-                        cp.addLast(new StringDecoder());
-                        cp.addLast(new StringEncoder());
-                        cp.addLast(new CilentHandler());
+                       /* cp.addLast(new StringDecoder());
+                        cp.addLast(new StringEncoder());*/
+                        cp.addLast(new MessageEncode());
+                        cp.addLast(new MessageDecode());
+                        //cp.addLast(new CilentHandler());
+                        cp.addLast(new MeeageClientHandler());
                     }
                 });
         try {
             ChannelFuture future = bootstrap.connect("localhost",8888).sync();
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+           /* BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             Channel channel = future.channel();
             while(true){
                 channel.writeAndFlush(br.readLine()+"\n");
-            }
+            }*/
+            User user = new User();
+            user.setName("张三");
+            user.setPassword("abc123");
+            Message message = new Message();
+            message.setVersionId(1);
+            message.setMessageType(1);
+            message.setLength(10);
+            message.setSessionId("aaaa");
+            message.setContent(JSON.toJSONString(user));
+            Channel channel = future.channel();
+
+            channel.writeAndFlush(message);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
+        }  finally {
             work.shutdownGracefully();
         }
     }
