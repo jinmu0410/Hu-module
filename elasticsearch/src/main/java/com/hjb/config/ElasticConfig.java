@@ -20,6 +20,7 @@ public class ElasticConfig {
     public static void init(){
         if(restHighLevelClient == null) {
             restHighLevelClient = new RestHighLevelClient(
+                    //集群模式下, RestClient.builder(new HttpHost(HOST, PORT, SCHEMA),new HttpHost(),...);
                     RestClient.builder(new HttpHost(HOST, PORT, SCHEMA)));
         }
     }
