@@ -18,4 +18,6 @@ public class User {
     private String address;
 
     private LocalDateTime time;
+
+    private String phoneNumber;
 }
