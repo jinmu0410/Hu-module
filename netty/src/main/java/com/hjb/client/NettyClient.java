@@ -27,11 +27,12 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline cp = ch.pipeline();
-                       /* cp.addLast(new StringDecoder());
-                        cp.addLast(new StringEncoder());*/
+                       /*cp.addLast(new StringDecoder());
+                         cp.addLast(new StringEncoder());
+                         cp.addLast(new CilentHandler());*/
                         cp.addLast(new MessageEncode());
                         cp.addLast(new MessageDecode());
-                        //cp.addLast(new CilentHandler());
+
                         cp.addLast(new MeeageClientHandler());
                     }
                 });
@@ -46,15 +47,16 @@ public class NettyClient {
             user.setName("张三");
             user.setPassword("abc123");
             Message message = new Message();
-            message.setVersionId(1);
+            message.setVersionId(001);
+            message.setExtField(002);
+            message.setUuId(UUID.randomUUID().toString());
             message.setMessageType(1);
-            message.setLength(10);
-            message.setSessionId("aaaa");
+            message.setLength(JSON.toJSONString(user).length());
             message.setContent(JSON.toJSONString(user));
             Channel channel = future.channel();
 
             channel.writeAndFlush(message);
-
+            future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }  finally {

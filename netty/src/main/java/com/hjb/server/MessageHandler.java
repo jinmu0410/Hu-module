@@ -26,12 +26,13 @@ public class MessageHandler extends SimpleChannelInboundHandler<Message>{
         User user = new User();
         user.setName("李四");
         user.setPassword("asdfgh123");
-        message1.setVersionId(2);
+        message1.setVersionId(001);
+        message1.setExtField(001);
+        message1.setUuId(UUID.randomUUID().toString());
         message1.setMessageType(2);
-        message1.setLength(10);
-        message1.setSessionId("bbbb");
+        message1.setLength(JSON.toJSONString(user).length());
         message1.setContent(JSON.toJSONString(user));
 
-        ctx.writeAndFlush(message);
+        ctx.writeAndFlush(message1);
     }
 }

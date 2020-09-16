@@ -11,8 +11,9 @@ public class MessageEncode extends MessageToByteEncoder<Message> {
 
         out.writeInt(msg.getVersionId());
         out.writeInt(msg.getMessageType());
-        out.writeInt(msg.getLength());
-        out.writeBytes(msg.getSessionId().getBytes());
+        out.writeInt(msg.getContent().getBytes().length);
+        out.writeInt(msg.getExtField());
+        out.writeBytes(msg.getUuId().getBytes());
 
         out.writeBytes(msg.getContent().getBytes());
     }

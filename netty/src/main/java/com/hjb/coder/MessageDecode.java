@@ -14,22 +14,22 @@ public class MessageDecode extends ByteToMessageDecoder {
         int versionId = in.readInt();
         int messageType = in.readInt();
         int length = in.readInt();
+        int extField = in.readInt();
 
-        byte[] sessionByte = new byte[36];
-        in.readBytes(sessionByte);
-        String sessionId = new String(sessionByte);
+        //uuid占36个字节
+        byte[] uuid = new byte[36];
+        in.readBytes(uuid);
 
-        // 读取消息内容
-        //byte[] content = in.readBytes(in.readableBytes()).array();
-        byte[] content = new byte[in.readableBytes()];
-        String data = new String(content);
+        byte[] data = new byte[length];
+        in.readBytes(data);
 
         Message message = new Message();
         message.setVersionId(versionId);
         message.setMessageType(messageType);
-        message.setContent(data);
+        message.setContent(new String(data));
+        message.setExtField(extField);
+        message.setUuId(new String(uuid));
         message.setLength(length);
-        message.setSessionId(sessionId);
 
         out.add(message);
     }
