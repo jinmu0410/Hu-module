@@ -20,19 +20,23 @@ public class MessageHandler extends SimpleChannelInboundHandler<Message>{
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
 
-        System.out.println("服务端收到消息"+ message);
+        if(message.getMessageType() != 4) {
+            System.out.println("服务端收到消息"+ message);
+            Message message1 = new Message();
+            User user = new User();
+            user.setName("李四");
+            user.setPassword("asdfgh123");
+            message1.setVersionId(001);
+            message1.setExtField(001);
+            message1.setUuId(UUID.randomUUID().toString());
+            message1.setMessageType(2);
+            message1.setLength(JSON.toJSONString(user).length());
+            message1.setContent(JSON.toJSONString(user));
 
-        Message message1 = new Message();
-        User user = new User();
-        user.setName("李四");
-        user.setPassword("asdfgh123");
-        message1.setVersionId(001);
-        message1.setExtField(001);
-        message1.setUuId(UUID.randomUUID().toString());
-        message1.setMessageType(2);
-        message1.setLength(JSON.toJSONString(user).length());
-        message1.setContent(JSON.toJSONString(user));
-
-        ctx.writeAndFlush(message1);
+            ctx.writeAndFlush(message1);
+        }else {
+            System.out.println("服务端收到心跳消息" + message);
+            ctx.channel().writeAndFlush(message);
+        }
     }
 }

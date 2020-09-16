@@ -1,5 +1,6 @@
 package com.hjb.server;
 
+import com.hjb.model.Message;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -20,7 +21,6 @@ public class ServerHandler extends SimpleChannelInboundHandler{
                 e.writeAndFlush("[自己]::" + msg +"\n");
             }
         });
-
     }
 
     @Override

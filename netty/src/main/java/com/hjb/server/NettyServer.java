@@ -10,6 +10,9 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
+
+import java.util.concurrent.TimeUnit;
 
 public class NettyServer {
 
@@ -25,13 +28,11 @@ public class NettyServer {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline cp = ch.pipeline();
-                       /* cp.addLast(new StringDecoder());
-                        cp.addLast(new StringEncoder());*/
-
+                        cp.addLast(new IdleStateHandler(90,0,0, TimeUnit.SECONDS));
                         cp.addLast(new MessageEncode());
                         cp.addLast(new MessageDecode());
-                        //cp.addLast(new ServerHandler());
                         cp.addLast(new MessageHandler());
+                        cp.addLast(new ServerHeartHandler());
                     }
                 });
         try {
