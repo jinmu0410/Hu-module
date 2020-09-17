@@ -37,7 +37,6 @@ public class NettyClient {
                         cp.addLast(new MessageEncode());
                         cp.addLast(new MessageDecode());
                         cp.addLast(new MeeageClientHandler());
-                        cp.addLast(new ClientHeartHandler());
                     }
                 });
         try {
