@@ -33,11 +33,11 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline cp = ch.pipeline();
-                        cp.addLast(new IdleStateHandler(0,60,0, TimeUnit.SECONDS));
-                        cp.addLast(new ClientHeartHandler());
+                        cp.addLast(new IdleStateHandler(30,15,0, TimeUnit.SECONDS));
                         cp.addLast(new MessageEncode());
                         cp.addLast(new MessageDecode());
                         cp.addLast(new MeeageClientHandler());
+                        cp.addLast(new ClientHeartHandler());
                     }
                 });
         try {

@@ -28,11 +28,12 @@ public class NettyServer {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline cp = ch.pipeline();
-                        cp.addLast(new IdleStateHandler(90,0,0, TimeUnit.SECONDS));
+                        //cp.addLast(new IdleStateHandler(30,15,0, TimeUnit.SECONDS));
                         cp.addLast(new MessageEncode());
                         cp.addLast(new MessageDecode());
+                        //cp.addLast(new ServerHeartHandler());
                         cp.addLast(new MessageHandler());
-                        cp.addLast(new ServerHeartHandler());
+
                     }
                 });
         try {

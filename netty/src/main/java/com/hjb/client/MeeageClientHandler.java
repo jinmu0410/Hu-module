@@ -5,16 +5,17 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class MeeageClientHandler extends SimpleChannelInboundHandler<Message> {
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Message message) throws Exception {
-        if(message.getMessageType() ==4){
-            System.out.println("客户端收到服务端发送的心跳消息"+ message);
-        }else {
-            System.out.println("客户端收到消息" + message);
-        }
+    protected void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
+            if(message.getMessageType() == 4){
+                System.out.println("客户端收到心跳消息" + message);
+            }else {
+                System.out.println("客户端收到消息" + message);
+            }
     }
 
     @Override
