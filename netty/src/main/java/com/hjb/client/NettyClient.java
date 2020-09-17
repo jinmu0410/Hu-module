@@ -12,7 +12,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 
-import java.net.InetSocketAddress;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -36,7 +35,7 @@ public class NettyClient {
                         cp.addLast(new IdleStateHandler(30,15,0, TimeUnit.SECONDS));
                         cp.addLast(new MessageEncode());
                         cp.addLast(new MessageDecode());
-                        cp.addLast(new MeeageClientHandler());
+                        cp.addLast(new MessageClientHandler());
                     }
                 });
         try {

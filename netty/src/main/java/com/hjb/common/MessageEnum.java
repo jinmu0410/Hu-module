@@ -1,4 +1,4 @@
-package com.hjb.handel;
+package com.hjb.common;
 
 public enum MessageEnum {
     LOGIN(1,"登录"),

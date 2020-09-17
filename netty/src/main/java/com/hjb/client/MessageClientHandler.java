@@ -10,7 +10,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class MeeageClientHandler extends SimpleChannelInboundHandler<Message> {
+public class MessageClientHandler extends SimpleChannelInboundHandler<Message> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
             if(message.getMessageType() == 4){
