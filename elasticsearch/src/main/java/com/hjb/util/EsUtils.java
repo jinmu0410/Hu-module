@@ -33,22 +33,23 @@ public class EsUtils {
 
     /**
      * 创建索引
-     * @param indexName
+     * @param index
      * @param mapping
      * @param setting
      * @return
      */
-    public CreateIndexResponse createIndex(String indexName, String mapping, String setting){
-        CreateIndexRequest createIndexRequest = new CreateIndexRequest(indexName);
-        if(mapping != null){
+    public CreateIndexResponse createIndex(String index, String mapping, String setting){
+        CreateIndexRequest createIndexRequest = new CreateIndexRequest(index);
+        if(!StringUtils.isEmpty(mapping)){
             createIndexRequest.mapping(mapping, XContentType.JSON);
         }
-        if(setting != null){
+        if(!StringUtils.isEmpty(setting)){
             createIndexRequest.settings(setting,XContentType.JSON);
         }
         CreateIndexResponse createIndexResponse = null;
         try {
             createIndexResponse = ElasticConfig.client().indices().create(createIndexRequest, RequestOptions.DEFAULT);
+            log.info("create index={}, response ={}",index, createIndexResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,6 +69,7 @@ public class EsUtils {
         try {
             AcknowledgedResponse delete = ElasticConfig.client().indices().delete(deleteindexRequest,RequestOptions.DEFAULT);
             result = delete.isAcknowledged();
+            log.info("delete index={}, reponse={}",index, delete);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,6 +99,7 @@ public class EsUtils {
         IndexResponse indexResponse = null;
         try {
             indexResponse = ElasticConfig.client().index(indexRequest,RequestOptions.DEFAULT);
+            log.info("insert index={}, response={}", index, indexResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -120,6 +123,7 @@ public class EsUtils {
         BulkResponse bulkResponse = null;
         try {
             bulkResponse = ElasticConfig.client().bulk(request,RequestOptions.DEFAULT);
+            log.info("bulk insert index={}, params={}, response={}",index, list, bulkResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -167,6 +171,7 @@ public class EsUtils {
         SearchResponse searchResponse = null;
         try {
             searchResponse = ElasticConfig.client().search(searchRequest,RequestOptions.DEFAULT);
+            log.info("search index={}, params={}, response={}",index, keyword, searchResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }
