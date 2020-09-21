@@ -11,13 +11,13 @@ public class Message implements Serializable {
     //版本号
     private int versionId;
 
-    //拓展字段固定001
+    //拓展字段，固定001
     private int extField;
 
     //消息体长度
     private int length;
 
-    //消息类型，枚举
+    //消息类型
     private int messageType;
 
     //uuid

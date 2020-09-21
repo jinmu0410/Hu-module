@@ -1,8 +1,11 @@
 package com.hjb.client;
 
 import com.alibaba.fastjson.JSON;
+import com.hjb.client.handler.ClientHeartHandler;
+import com.hjb.client.handler.MessageClientHandler;
 import com.hjb.coder.MessageDecode;
 import com.hjb.coder.MessageEncode;
+import com.hjb.handler.IMIdleStateHandler;
 import com.hjb.model.Message;
 import com.hjb.model.User;
 import io.netty.bootstrap.Bootstrap;
@@ -10,7 +13,6 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -32,10 +34,12 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline cp = ch.pipeline();
-                        cp.addLast(new IdleStateHandler(30,15,0, TimeUnit.SECONDS));
+                        //空闲检测
+                        cp.addLast(new IMIdleStateHandler());
                         cp.addLast(new MessageEncode());
                         cp.addLast(new MessageDecode());
                         cp.addLast(new MessageClientHandler());
+                        cp.addLast(new ClientHeartHandler());
                     }
                 });
         try {

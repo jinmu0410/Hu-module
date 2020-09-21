@@ -2,6 +2,8 @@ package com.hjb.server;
 
 import com.hjb.coder.MessageDecode;
 import com.hjb.coder.MessageEncode;
+import com.hjb.handler.IMIdleStateHandler;
+import com.hjb.server.handler.MessageHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -10,9 +12,6 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.timeout.IdleStateHandler;
-
-import java.util.concurrent.TimeUnit;
 
 public class NettyServer {
 
@@ -28,10 +27,10 @@ public class NettyServer {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline cp = ch.pipeline();
-                        //cp.addLast(new IdleStateHandler(30,15,0, TimeUnit.SECONDS));
+                        //空闲检测
+                        cp.addLast(new IMIdleStateHandler());
                         cp.addLast(new MessageEncode());
                         cp.addLast(new MessageDecode());
-                        //cp.addLast(new ServerHeartHandler());
                         cp.addLast(new MessageHandler());
 
                     }
