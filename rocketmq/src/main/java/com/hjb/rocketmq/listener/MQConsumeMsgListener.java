@@ -68,12 +68,12 @@ public class MQConsumeMsgListener implements MessageListenerConcurrently {
         MQMsgProcessor imqMsgProcessor = selectConsumeService(topic, tag);
         try {
             if (imqMsgProcessor == null) {
-                log.error(String.format("根据Topic：%s和Tag:%s 没有找到对应的处理消息的服务", topic, tag));
+                log.error("根据Topic：{}和Tag: {} 没有找到对应的处理消息的服务", topic, tag);
                 throw new RocketMQException(RocketMQErrorEnum.NOT_FOUND_CONSUMESERVICE);
             }
-            log.info(String.format("根据Topic：%s和Tag:%s 路由到的服务为:%s，开始调用处理消息", topic, tag, imqMsgProcessor.getClass().getName()));
+            log.info("根据Topic：{}和Tag: {} ,消息大小: {} ,路由到的服务为: {} ,开始调用处理消息", topic, tag, value.size(), imqMsgProcessor.getClass().getName());
             //调用该类的方法,处理消息
-            MQConsumeResult mqConsumeResult = imqMsgProcessor.handle(topic, tag, value);
+            MQConsumeResult mqConsumeResult = imqMsgProcessor.handle(tag, value);
             if (mqConsumeResult == null) {
                 throw new RocketMQException(RocketMQErrorEnum.HANDLE_RESULT_NULL);
             }

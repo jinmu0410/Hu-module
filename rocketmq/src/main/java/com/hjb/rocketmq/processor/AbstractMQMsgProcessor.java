@@ -14,11 +14,11 @@ public abstract class AbstractMQMsgProcessor implements MQMsgProcessor {
 
 
     @Override
-    public MQConsumeResult handle(String topic, String tag, List<MessageExt> msgs) {
+    public MQConsumeResult handle(String tag, List<MessageExt> msgs) {
         MQConsumeResult mqConsumeResult = new MQConsumeResult();
         /**可以增加一些其他逻辑*/
         for (MessageExt messageExt : msgs) {
-            mqConsumeResult = this.consumeMessage(tag, messageExt.getKeys() == null ? null : Arrays.asList(messageExt.getKeys().split(MessageConst.KEY_SEPARATOR)), messageExt);
+            mqConsumeResult = this.consumeMessage(tag, messageExt);
         }
         /**可以增加一些其他逻辑*/
         return mqConsumeResult;
@@ -27,9 +27,8 @@ public abstract class AbstractMQMsgProcessor implements MQMsgProcessor {
     /***
      * 消息某条消息
      * @param tag
-     * @param keys
      * @param messageExt
      * @return
      */
-    protected abstract MQConsumeResult consumeMessage(String tag, List<String> keys, MessageExt messageExt);
+    protected abstract MQConsumeResult consumeMessage(String tag, MessageExt messageExt);
 }

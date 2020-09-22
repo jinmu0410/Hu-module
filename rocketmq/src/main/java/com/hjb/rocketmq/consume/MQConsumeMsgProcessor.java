@@ -6,7 +6,6 @@ import com.hjb.rocketmq.processor.AbstractMQMsgProcessor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.common.message.MessageExt;
 
-import java.util.List;
 
 /**
  * 不同的topic，tag业务处理，创建不同的process处理类
@@ -16,8 +15,8 @@ import java.util.List;
 public class MQConsumeMsgProcessor extends AbstractMQMsgProcessor {
 
     @Override
-    protected MQConsumeResult consumeMessage(String tag, List<String> keys, MessageExt messageExt) {
-        log.info("消费者获取到的消息ID：" + messageExt.getMsgId()  + "消息体为" + new String(messageExt.getBody()));
+    protected MQConsumeResult consumeMessage(String tag, MessageExt messageExt) {
+        log.info("消息ID: {}, 消息体: {}",messageExt.getMsgId(), new String(messageExt.getBody()));
         //TODO 判断该消息是否重复消费（RocketMQ不保证消息不重复，如果你的业务需要保证严格的不重复消息，需要你自己在业务端去重）
 
         //如果注解中tags数据中包含多个tag或者是全部的tag(*)，则需要根据tag判断是那个业务，

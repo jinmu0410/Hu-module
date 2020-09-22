@@ -1,5 +1,7 @@
 package com.hjb.rocketmq;
 
+import com.alibaba.fastjson.JSON;
+import com.hjb.rocketmq.common.User;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
@@ -9,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 public class Test {
 
@@ -17,17 +22,24 @@ public class Test {
 
     @GetMapping("/test")
     public void test() throws InterruptedException, RemotingException, MQClientException, MQBrokerException {
-        String msg = "demo msg test";
-        Message sendMsg = new Message("topic1", "tag1", msg.getBytes());
-        Message sendMsg1 = new Message("topic2", "tag2", msg.getBytes());
+        User user = new User();
+        user.setName("测试");
+        user.setAge(10);
+        Message sendMsg = new Message("topic1", "tag1", JSON.toJSONString(user).getBytes());
+
+        Message sendMsg1 = new Message("topic2", "tag2", JSON.toJSONString(user).getBytes());
         //默认3秒超时
-        for (int i = 0; i < 100; i++) {
+        List<Message> messageList = new ArrayList<>();
+        List<Message> messageList1 = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
             if (i % 2 == 0) {
-                producer.send(sendMsg);
+                messageList.add(sendMsg);
             } else {
-                producer.send(sendMsg1);
+                messageList1.add(sendMsg1);
             }
         }
+        producer.send(messageList);
+        producer.send(messageList1);
         producer.shutdown();
     }
 }

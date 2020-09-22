@@ -1,5 +1,6 @@
 package com.hjb.rocketmq.consume;
 
+import com.alibaba.fastjson.JSON;
 import com.hjb.rocketmq.annotation.MQConsumeService;
 import com.hjb.rocketmq.common.MQConsumeResult;
 import com.hjb.rocketmq.processor.AbstractMQMsgProcessor;
@@ -13,8 +14,8 @@ import java.util.List;
 public class TestMQConsumeMsgProcessor extends AbstractMQMsgProcessor {
 
     @Override
-    protected MQConsumeResult consumeMessage(String tag, List<String> keys, MessageExt messageExt) {
-        log.info("消费者获取到的消息ID：" + messageExt.getMsgId()  + "消息体为" + new String(messageExt.getBody()));
+    protected MQConsumeResult consumeMessage(String tag, MessageExt messageExt) {
+        log.info("消息ID: {}, 消息体: {}",messageExt.getMsgId(), new String(messageExt.getBody()));
         //TODO 判断该消息是否重复消费（RocketMQ不保证消息不重复，如果你的业务需要保证严格的不重复消息，需要你自己在业务端去重）
 
         //如果注解中tags数据中包含多个tag或者是全部的tag(*)，则需要根据tag判断是那个业务，
