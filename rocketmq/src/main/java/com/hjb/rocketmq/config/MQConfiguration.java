@@ -120,6 +120,7 @@ public class MQConfiguration {
             for (String topicTags : topicTagsArr) {
                 String[] topicTag = topicTags.split("~");
                 consumer.subscribe(topicTag[0], topicTag[1]);
+                log.info("consumer.subscribe topic: {}, tag: {}",topicTag[0], topicTag[1]);
             }
             consumer.start();
             log.info("consumer is start !!! groupName:{},topics:{},namesrvAddr:{}", groupName, topics, namesrvAddr);

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="xxl-job-core-2.2.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../xuxueli0323-xxl-job-v2.2.0/xxl-job/xxl-job-core/target/xxl-job-core-2.2.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

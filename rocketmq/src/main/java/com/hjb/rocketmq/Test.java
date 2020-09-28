@@ -31,7 +31,7 @@ public class Test {
         //默认3秒超时
         List<Message> messageList = new ArrayList<>();
         List<Message> messageList1 = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 2; i++) {
             if (i % 2 == 0) {
                 messageList.add(sendMsg);
             } else {
