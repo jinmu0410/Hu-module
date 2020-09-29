@@ -13,6 +13,8 @@
         <option value="$PROJECT_DIR$/rocketmq/pom.xml" />
         <option value="$PROJECT_DIR$/redis/pom.xml" />
         <option value="$PROJECT_DIR$/xxl-job/pom.xml" />
+        <option value="$PROJECT_DIR$/dubbo-provider/pom.xml" />
+        <option value="$PROJECT_DIR$/dubbo-consume/pom.xml" />
       </list>
     </option>
   </component>
