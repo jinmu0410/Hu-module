@@ -3,7 +3,6 @@ package com.hjb.util;
 
 import com.alibaba.fastjson.JSON;
 import com.hjb.config.ElasticConfig;
-import com.hjb.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -132,6 +131,12 @@ public class EsUtils {
     }
 
 
+    /**
+     * 查询
+     * @param index
+     * @param keyword
+     * @return
+     */
     public SearchResponse search(String index,String keyword){
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
@@ -153,6 +158,7 @@ public class EsUtils {
         //完全包含查询,之前的查询中，当我们输入“我天”时，ES会把分词后所有包含“我”和“天”的都查询出来
         //如果我们希望必须是包含了两个字的才能被查询出来，那么我们就需要设置一下Operator。and或者or
         sourceBuilder.query(QueryBuilders.matchQuery("xx","yy").operator(Operator.AND));*/
+        sourceBuilder.query(boolQueryBuilder);
 
         //高亮查询
         HighlightBuilder highlightBuilder = new HighlightBuilder();
@@ -163,8 +169,6 @@ public class EsUtils {
         highlightBuilder.numOfFragments(0);//从第一个分片开始获取高亮片段
         sourceBuilder.highlighter(highlightBuilder);
 
-
-        sourceBuilder.query(boolQueryBuilder);
         searchRequest.source(sourceBuilder);
         searchRequest.indices(index);
 
