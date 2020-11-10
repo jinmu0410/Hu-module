@@ -1,9 +1,9 @@
-package com.hjb.util;
-
+package com.hjb.es;
 
 import com.alibaba.fastjson.JSON;
-import com.hjb.config.ElasticConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -14,30 +14,30 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.indices.CreateIndexRequest;
-import org.elasticsearch.client.indices.CreateIndexResponse;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+@Service
 @Slf4j
-public class EsUtils {
+public class EsServiceImpl implements EsService{
 
-    /**
-     * 创建索引
-     * @param index
-     * @param mapping
-     * @param setting
-     * @return
-     */
-    public CreateIndexResponse createIndex(String index, String mapping, String setting){
+    @Autowired
+    private RestHighLevelClient restHighLevelClient;
+
+    @Override
+    public CreateIndexResponse createIndex(String index, String mapping, String setting) {
         CreateIndexRequest createIndexRequest = new CreateIndexRequest(index);
         if(!StringUtils.isEmpty(mapping)){
             createIndexRequest.mapping(mapping, XContentType.JSON);
@@ -47,44 +47,31 @@ public class EsUtils {
         }
         CreateIndexResponse createIndexResponse = null;
         try {
-            createIndexResponse = ElasticConfig.client().indices().create(createIndexRequest, RequestOptions.DEFAULT);
+            createIndexResponse = restHighLevelClient.indices().create(createIndexRequest, RequestOptions.DEFAULT);
             log.info("create index={}, response ={}",index, createIndexResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ElasticConfig.close();
         return createIndexResponse;
     }
 
-    /**
-     * 删除索引
-     * @param index
-     * @return
-     */
-    public Boolean deletedIndex(String index){
+    @Override
+    public Boolean deletedIndex(String index) {
         DeleteIndexRequest deleteindexRequest = new DeleteIndexRequest(index);
         deleteindexRequest.indicesOptions(IndicesOptions.LENIENT_EXPAND_OPEN);
         Boolean result = false;
         try {
-            AcknowledgedResponse delete = ElasticConfig.client().indices().delete(deleteindexRequest,RequestOptions.DEFAULT);
+            AcknowledgedResponse delete = restHighLevelClient.indices().delete(deleteindexRequest,RequestOptions.DEFAULT);
             result = delete.isAcknowledged();
             log.info("delete index={}, reponse={}",index, delete);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ElasticConfig.close();
         return result;
     }
 
-    /**
-     * 插入文档
-     * @param index
-     * @param type
-     * @param id
-     * @param object
-     * @return
-     */
-    public IndexResponse insertIndex(String index, String type ,String id,Object object){
+    @Override
+    public IndexResponse insertIndex(String index, String type, String id, Object object) {
         IndexRequest indexRequest = new IndexRequest();
         indexRequest.index(index);
         if(!StringUtils.isEmpty(id)){
@@ -97,22 +84,16 @@ public class EsUtils {
 
         IndexResponse indexResponse = null;
         try {
-            indexResponse = ElasticConfig.client().index(indexRequest,RequestOptions.DEFAULT);
+            indexResponse = restHighLevelClient.index(indexRequest,RequestOptions.DEFAULT);
             log.info("insert index={}, response={}", index, indexResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ElasticConfig.close();
         return indexResponse;
     }
 
-    /**
-     * 批量插入文档
-     * @param index
-     * @param list
-     * @return
-     */
-    public BulkResponse bulkIndex(String index, List<Object> list){
+    @Override
+    public BulkResponse bulkIndex(String index, List<Object> list) {
         BulkRequest request = new BulkRequest();
         list.forEach(e->{
             IndexRequest indexRequest = new IndexRequest(index);
@@ -121,30 +102,25 @@ public class EsUtils {
         });
         BulkResponse bulkResponse = null;
         try {
-            bulkResponse = ElasticConfig.client().bulk(request,RequestOptions.DEFAULT);
+            bulkResponse = restHighLevelClient.bulk(request,RequestOptions.DEFAULT);
             log.info("bulk insert index={}, params={}, response={}",index, list, bulkResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ElasticConfig.close();
         return bulkResponse;
     }
 
-
-    /**
-     * 查询
-     * @param index
-     * @param keyword
-     * @return
-     */
-    public SearchResponse search(String index,String keyword){
+    @Override
+    public SearchResponse search(String index,String source ,String keyword) {
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-        boolQueryBuilder.must(QueryBuilders.matchQuery("address",keyword));
+        boolQueryBuilder.must(QueryBuilders.matchQuery(source,keyword));
 
-        /*//queryStringQuery全文查询
+
+
+        //queryStringQuery全文查询
         sourceBuilder.query(QueryBuilders.queryStringQuery("xx"));
 
         //短语匹配 ,和match查询类似，match_phrase查询首先解析查询字符串来产生一个词条列表。
@@ -157,7 +133,8 @@ public class EsUtils {
 
         //完全包含查询,之前的查询中，当我们输入“我天”时，ES会把分词后所有包含“我”和“天”的都查询出来
         //如果我们希望必须是包含了两个字的才能被查询出来，那么我们就需要设置一下Operator。and或者or
-        sourceBuilder.query(QueryBuilders.matchQuery("xx","yy").operator(Operator.AND));*/
+        sourceBuilder.query(QueryBuilders.matchQuery("xx","yy").operator(Operator.AND));
+
         sourceBuilder.query(boolQueryBuilder);
 
         //高亮查询
@@ -174,13 +151,11 @@ public class EsUtils {
 
         SearchResponse searchResponse = null;
         try {
-            searchResponse = ElasticConfig.client().search(searchRequest,RequestOptions.DEFAULT);
+            searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
             log.info("search index={}, params={}, response={}",index, keyword, searchResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ElasticConfig.close();
         return searchResponse;
     }
-
 }

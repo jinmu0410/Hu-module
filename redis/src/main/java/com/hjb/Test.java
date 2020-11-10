@@ -19,8 +19,9 @@ public class Test {
 
     @GetMapping("/test")
     public void test(){
-        //redisTemplate.opsForValue().set("test","hello world!", 10, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set("test","hello world!");
 
+        System.out.println( redisTemplate.opsForValue().get("test"));
        /* Map<String, Object> hashmap = new HashMap<>();
         hashmap.put("name","zhs");
         hashmap.put("age",12);
@@ -41,7 +42,7 @@ public class Test {
         redisTemplate.opsForZSet().add("zset",456,34);
         redisTemplate.opsForZSet().add("zset1",332,54);
         redisTemplate.opsForZSet().add("zset",335,24);*/
-        System.out.println(redisTemplate.opsForZSet().range("zset",30,100));
+       /* System.out.println(redisTemplate.opsForZSet().range("zset",30,100));
         RedisZSetCommands.Range range = new RedisZSetCommands.Range();
         range.gt(100);
         range.lt(350);
@@ -50,7 +51,7 @@ public class Test {
         System.out.println("335的排名="+redisTemplate.opsForZSet().rank("zset",335));
 
         System.out.println(redisTemplate.opsForZSet().rangeByScore("zset",0,500));
-
+*/
 
     }
 }
