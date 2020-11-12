@@ -65,7 +65,6 @@ public class CkUtil implements InitializingBean {
             properties.setPassword(clickhousePassword);
             properties.setDatabase(clickhouseDB);
             properties.setSocketTimeout(clickhouseSocketTimeout);
-
             ClickHouseDataSource clickHouseDataSource = new ClickHouseDataSource(clickhouseAddress,properties);
             try {
                 connection = clickHouseDataSource.getConnection();

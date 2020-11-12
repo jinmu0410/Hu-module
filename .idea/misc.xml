@@ -15,8 +15,15 @@
         <option value="$PROJECT_DIR$/xxl-job/pom.xml" />
         <option value="$PROJECT_DIR$/dubbo-provider/pom.xml" />
         <option value="$PROJECT_DIR$/dubbo-consume/pom.xml" />
-        <option value="$PROJECT_DIR$/source-code/pom.xml" />
+        <option value="$PROJECT_DIR$/design/pom.xml" />
+        <option value="$PROJECT_DIR$/leetcode/pom.xml" />
+        <option value="$PROJECT_DIR$/demo/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/leetcode/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">

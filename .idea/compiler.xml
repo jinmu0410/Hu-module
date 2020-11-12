@@ -6,31 +6,42 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="redis" />
-        <module name="netty" />
-        <module name="dubbo-provider" />
-        <module name="provider" />
-        <module name="dubbo-consume" />
-        <module name="rocketmq" />
-        <module name="source-code" />
-        <module name="elasticsearch" />
-        <module name="zookeeper" />
         <module name="xxl-job" />
+        <module name="dubbo-consume" />
+        <module name="redis" />
+        <module name="demo" />
+        <module name="rocketmq" />
+        <module name="netty" />
+        <module name="provider" />
+        <module name="dubbo-provider" />
+        <module name="zookeeper" />
+        <module name="leetcode" />
+        <module name="elasticsearch" />
+        <module name="design" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="algorithm" target="1.8" />
       <module name="dubbo" target="1.8" />
+      <module name="leetcode" target="1.8" />
+      <module name="LeetCode" target="1.8" />
       <module name="provider" target="1.8" />
       <module name="quzrtz" target="1.8" />
+      <module name="source-code" target="1.8" />
       <module name="zookeeper" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="LeetCode" options="-parameters" />
+      <module name="algorithm" options="-parameters" />
+      <module name="demo" options="-parameters" />
+      <module name="design" options="-parameters" />
       <module name="dubbo" options="-parameters" />
       <module name="dubbo-consume" options="-parameters" />
       <module name="dubbo-provider" options="-parameters" />
       <module name="elasticsearch" options="-parameters" />
+      <module name="leetcode" options="-parameters" />
       <module name="netty" options="-parameters" />
       <module name="provider" options="-parameters" />
       <module name="quzrtz" options="-parameters" />
