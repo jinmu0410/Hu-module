@@ -1,5 +1,8 @@
 package com.hjb.demo.leetcode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
  *
@@ -36,7 +39,6 @@ public class Main_2 {
     }
 
     public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-
         ListNode head = new ListNode(0);
         ListNode tail = head;
         int num = 0;
@@ -72,6 +74,32 @@ public class Main_2 {
         ListNode node = new ListNode(8,new ListNode(3,new ListNode(5)));
 
         ListNode node1 = new ListNode(1,new ListNode(3,new ListNode(2)));
-        System.out.println(addTwoNumbers(node,node1));
+        System.out.println(test(node,node1));
+    }
+
+    public static ListNode test(ListNode l1 ,ListNode l2){
+        ListNode temp = new ListNode(0);
+        ListNode tail = temp;
+        List<Integer> list = new ArrayList<>();
+        int num = 0;
+        while(l1 != null || l2 != null || num!=0){
+            int val1 = l1==null?0:l1.val;
+            int val2 = l2==null?0:l2.val;
+
+            int val = val1 + val2 + num;
+            int x = val%10;
+            num = val/10;
+            list.add(x);
+            ListNode listNode = new ListNode(x);
+            tail.next = listNode;
+            tail = listNode;
+            if(l1 != null){
+                l1=l1.next;
+            }
+            if(l2 != null){
+                l2=l2.next;
+            }
+        }
+        return temp.next;
     }
 }

@@ -5,7 +5,7 @@ public class Test {
 
         JDKProxy jdkProxy = new JDKProxy();
         UserService userService = (UserService) jdkProxy.proxy(new UserServiceImpl());
-        userService.work();
+        userService.work("ss",1);
 
         CGLBProxy cglbProxy = new CGLBProxy();
         CgUser cgUser = (CgUser) cglbProxy.proxy(new CgUser());

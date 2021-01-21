@@ -32,10 +32,21 @@ public class Main_1 {
     public static void main(String[] args) {
         int[] a ={2,3,4,1,5};
 
-        int[] aa = twoSum(a,6);
+        int[] aa = test(a,6);
         for (int i = 0; i < aa.length; i++) {
             System.out.println(aa[i]);
         }
 
+    }
+
+    public static int[] test(int[] num,int target){
+        HashMap<Integer,Integer> hashMap = new HashMap<>();
+        for (int i = 0; i < num.length; i++) {
+                if(hashMap.containsKey(target- num[i])){
+                    return new int[]{i,hashMap.get(target-num[i])};
+            }
+                hashMap.put(num[i],i);
+        }
+        return null;
     }
 }
