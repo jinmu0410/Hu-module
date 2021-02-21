@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ConsumeController {
 
-    @Reference
+    @Reference(version = "1.0.0",group = "user-group",retries = 3,loadbalance = "roundrobin",mock = "true")
     private UserService userService;
 
     @GetMapping(value = "test")

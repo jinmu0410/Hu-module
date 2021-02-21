@@ -20,6 +20,8 @@ public class Test {
     @GetMapping("/test")
     public void test(){
        // redisTemplate.opsForValue().set("test","hello world!");
+        redisTemplate.opsForValue().setBit("tem",123,true);
+        redisTemplate.opsForValue().getBit("tem",123);
 
         System.out.println( redisTemplate.opsForValue().get("test"));
        /* Map<String, Object> hashmap = new HashMap<>();

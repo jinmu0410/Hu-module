@@ -5,6 +5,7 @@ import com.hjb.rocketmq.common.User;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +28,20 @@ public class Test {
         user.setAge(10);
         Message sendMsg = new Message("topic1", "tag1", JSON.toJSONString(user).getBytes());
 
-        Message sendMsg1 = new Message("topic2", "tag2", JSON.toJSONString(user).getBytes());
+        //Message sendMsg1 = new Message("topic2", "tag2", JSON.toJSONString(user).getBytes());
         //默认3秒超时
         List<Message> messageList = new ArrayList<>();
-        List<Message> messageList1 = new ArrayList<>();
+        //List<Message> messageList1 = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            if (i % 2 == 0) {
+            messageList.add(sendMsg);
+            /*if (i % 2 == 0) {
                 messageList.add(sendMsg);
             } else {
                 messageList1.add(sendMsg1);
-            }
+            }*/
         }
-        producer.send(messageList);
-        producer.send(messageList1);
-        producer.shutdown();
+        producer.send(messageList)
+        //producer.send(messageList1);
+       
     }
 }
