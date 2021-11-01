@@ -2,26 +2,28 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="xxl-job" />
-        <module name="dubbo-consume" />
-        <module name="redis" />
-        <module name="demo" />
         <module name="rocketmq" />
-        <module name="netty" />
-        <module name="rpc-client" />
-        <module name="provider" />
-        <module name="rpc-server" />
-        <module name="dubbo-provider" />
         <module name="zookeeper" />
-        <module name="rpc-core" />
+        <module name="xxl-job" />
         <module name="leetcode" />
+        <module name="dubbo-consume" />
+        <module name="demo" />
+        <module name="redis" />
         <module name="elasticsearch" />
+        <module name="provider" />
+        <module name="dubbo-provider" />
+        <module name="rpc-client" />
         <module name="kafka" />
         <module name="design" />
+        <module name="rpc-server" />
+        <module name="guava" />
+        <module name="netty" />
+        <module name="rpc-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -29,6 +31,7 @@
       <module name="dubbo" target="1.8" />
       <module name="leetcode" target="1.8" />
       <module name="LeetCode" target="1.8" />
+      <module name="nio" target="1.8" />
       <module name="provider" target="1.8" />
       <module name="quzrtz" target="1.8" />
       <module name="source-code" target="1.8" />
@@ -45,6 +48,7 @@
       <module name="dubbo-consume" options="-parameters" />
       <module name="dubbo-provider" options="-parameters" />
       <module name="elasticsearch" options="-parameters" />
+      <module name="guava" options="-parameters" />
       <module name="kafka" options="-parameters" />
       <module name="leetcode" options="-parameters" />
       <module name="netty" options="-parameters" />
